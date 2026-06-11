@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Happy 2nd Anniversary, My Love</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for romantic icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for romantic synthesizer background music -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti for celebration triggers -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f2 50%, #f6e8ea 100%);
+        }
+        .font-romance {
+            font-family: 'Great Vibes', cursive;
+        }
+        .font-header {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Heart particle styling */
+        .heart-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 6s linear infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        /* Custom scrollbar for beautiful experience */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff5f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f43f5e;
+        }
+        /* Rotate transitions for envelope */
+        .rotate-x-180 {
+            transform: rotateX(180deg);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden text-neutral-800 selection:bg-rose-200">
+
+    <!-- Floating Hearts Container -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none z-10 overflow-hidden"></div>
+
+    <!-- Music Player Button (Adjusted for mobile touch ergonomics) -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
+        <button id="music-toggle" class="bg-rose-500 hover:bg-rose-600 text-white p-3.5 md:p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center gap-2 group focus:outline-none focus:ring-2 focus:ring-rose-300">
+            <i id="music-icon" class="fas fa-music animate-pulse"></i>
+            <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-out whitespace-nowrap text-xs md:text-sm font-semibold">Play Sweet Harmony</span>
+        </button>
+    </div>
+
+    <!-- Hero / Cover Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden py-16 md:py-24">
+        <!-- Floating romantic graphics -->
+        <div class="absolute top-8 left-8 text-rose-200 text-4xl md:text-6xl opacity-35 animate-bounce duration-1000"><i class="fas fa-heart"></i></div>
+        <div class="absolute bottom-16 right-8 text-rose-200 text-5xl md:text-7xl opacity-40 animate-pulse"><i class="fas fa-heart"></i></div>
+        <div class="absolute top-1/4 right-12 text-rose-100 text-3xl md:text-5xl opacity-25"><i class="fas fa-envelope-open-heart"></i></div>
+
+        <div class="z-20 max-w-4xl space-y-4 md:space-y-6 px-2">
+            <span class="text-rose-600 tracking-[0.15em] sm:tracking-[0.25em] uppercase text-[10px] sm:text-xs md:text-sm font-semibold inline-block px-3 py-1 bg-rose-50 rounded-full border border-rose-100 shadow-sm animate-fade-in">
+                Celebrating Our Journey Together
+            </span>
+            <h1 class="font-header text-4xl sm:text-6xl md:text-8xl font-extrabold text-neutral-900 leading-tight">
+                Two Years of <br>
+                <span class="font-romance text-rose-500 text-5xl sm:text-7xl md:text-9xl font-normal block mt-1 md:mt-2 drop-shadow-sm">Pure Magic</span>
+            </h1>
+            <p class="text-sm sm:text-base md:text-xl text-neutral-600 max-w-lg mx-auto font-light leading-relaxed px-4">
+                To the girl who changed my world forever. This is our timeline of love, milestones, laughs, and promises for a lifetime.
+            </p>
+
+            <!-- Days Counter widget - Fully Responsive -->
+            <div class="py-4 md:py-8 max-w-full px-2">
+                <div class="grid grid-cols-4 gap-2 sm:gap-4 md:gap-6 bg-white/70 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-rose-100/50 shadow-xl max-w-md md:max-w-2xl mx-auto">
+                    <div class="flex flex-col p-1 sm:p-2 items-center justify-center">
+                        <span id="counter-days" class="font-header text-2xl sm:text-4xl md:text-5xl font-bold text-rose-600">000</span>
+                        <span class="text-[9px] sm:text-xs uppercase tracking-wider text-neutral-500 mt-1 font-medium">Days</span>
+                    </div>
+                    <div class="flex flex-col p-1 sm:p-2 border-l border-neutral-100 items-center justify-center">
+                        <span id="counter-hours" class="font-header text-2xl sm:text-4xl md:text-5xl font-bold text-rose-500">00</span>
+                        <span class="text-[9px] sm:text-xs uppercase tracking-wider text-neutral-500 mt-1 font-medium">Hours</span>
+                    </div>
+                    <div class="flex flex-col p-1 sm:p-2 border-l border-neutral-100 items-center justify-center">
+                        <span id="counter-minutes" class="font-header text-2xl sm:text-4xl md:text-5xl font-bold text-rose-500">00</span>
+                        <span class="text-[9px] sm:text-xs uppercase tracking-wider text-neutral-500 mt-1 font-medium">Mins</span>
+                    </div>
+                    <div class="flex flex-col p-1 sm:p-2 border-l border-neutral-100 items-center justify-center">
+                        <span id="counter-seconds" class="font-header text-2xl sm:text-4xl md:text-5xl font-bold text-rose-400 animate-pulse">00</span>
+                        <span class="text-[9px] sm:text-xs uppercase tracking-wider text-neutral-500 mt-1 font-medium">Secs</span>
+                    </div>
+                </div>
+                <p class="text-xs sm:text-sm text-neutral-500 mt-3 sm:mt-4 italic px-2">
+                    since we first made it official on <strong class="text-rose-600">July 11, 2024</strong> ❤️
+                </p>
+            </div>
+
+            <div class="pt-2">
+                <a href="#timeline-anchor" class="inline-flex items-center justify-center gap-2 bg-neutral-900 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-sm sm:text-base font-semibold shadow-lg hover:bg-rose-600 transition-all duration-300 hover:shadow-rose-200 hover:-translate-y-1">
+                    <span>Explore Our Milestones</span>
+                    <i class="fas fa-arrow-down animate-bounce text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Wave divider at bottom of hero -->
+        <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-[30px] sm:h-[60px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C26.9,3.82,55.12,11.51,82,19.34,136.25,35.2,190.1,51.8,245.52,56.45Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+    </header>
+
+    <div id="timeline-anchor"></div>
+
+    <!-- Interactive Timeline Section -->
+    <main class="bg-white py-12 md:py-20 px-4 sm:px-6 md:px-8 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-10 md:mb-16 space-y-3 px-2">
+                <h2 class="font-header text-3xl sm:text-4xl md:text-6xl font-extrabold text-neutral-950">Our Chapters</h2>
+                <div class="w-16 sm:w-24 h-1 bg-gradient-to-r from-rose-400 to-rose-600 mx-auto rounded-full"></div>
+                <p class="text-xs sm:text-sm text-neutral-500 max-w-md mx-auto">
+                    Every step we took, every milestone we shared. These photos load automatically if saved in your local folder!
+                </p>
+            </div>
+
+            <!-- Milestone Container -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="milestones-grid">
+                <!-- Milestone Cards are dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- The Envelope & Wax-Seal Letter Section -->
+    <section class="py-16 md:py-24 bg-gradient-to-b from-white to-[#fff0f2] px-4 sm:px-6 md:px-8 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10 px-2">
+            <span class="text-rose-600 tracking-[0.2em] uppercase text-[10px] sm:text-xs font-semibold block mb-2">The Ultimate Reveal</span>
+            <h2 class="font-header text-3xl sm:text-4xl md:text-6xl font-extrabold text-neutral-950 mb-4 md:mb-6">A Letter For You</h2>
+            <p class="text-xs sm:text-sm md:text-base text-neutral-500 max-w-md mx-auto mb-10">
+                I wanted to give you something you could keep forever. Tap the envelope below to break the wax seal and reveal my heartfelt message to you.
+            </p>
+
+            <!-- ENVELOPE CONTAINER -->
+            <div class="flex justify-center items-center py-4 min-h-[360px] sm:min-h-[420px] relative">
+                <div id="envelope-wrapper" class="relative w-full max-w-[340px] sm:max-w-lg h-[240px] sm:h-[280px] cursor-pointer transition-all duration-500 hover:scale-102" onclick="openLetter()">
+                    
+                    <!-- Envelope Shadow -->
+                    <div class="absolute inset-0 bg-neutral-900/10 rounded-2xl blur-lg transform translate-y-4"></div>
+
+                    <!-- Envelope Body Back -->
+                    <div class="absolute inset-0 bg-[#f4dcd6] rounded-2xl border border-[#e5c5be] overflow-hidden shadow-inner flex items-center justify-center">
+                        <div class="font-romance text-rose-800 text-2xl sm:text-3xl">With All My Love...</div>
+                    </div>
+
+                    <!-- Letter Sheet (Unfolds upwards, responsive padding & scrollable) -->
+                    <div id="letter-sheet" class="absolute left-[3%] right-[3%] bottom-4 bg-white p-4 sm:p-6 rounded-lg shadow-2xl transition-all duration-700 ease-in-out z-10 origin-bottom transform translate-y-0 opacity-0 scale-95 pointer-events-none">
+                        <div class="border-2 border-rose-100 p-4 sm:p-6 md:p-8 rounded-md bg-stone-50/50 max-h-[380px] sm:max-h-[450px] overflow-y-auto text-left relative">
+                            <h3 class="font-romance text-3xl sm:text-4xl text-rose-600 text-center mb-3 sm:mb-4">Happy Second Anniversary, Baby!</h3>
+                            <div class="space-y-3 sm:space-y-4 text-xs sm:text-sm md:text-base leading-relaxed text-neutral-700 font-light">
+                               <p>My Dearest Jerlyn,</p>
+
+<p>
+   Happy 2nd Anniv, baby! So much has happened in these last two years, It feels like we are still getting to know each other, but we have made so many memories with each other that I will cherish forever.
+</p>
+
+<p>
+   It’s hard to believe that it all started with a simple stalking me on facebook :p, and now we’ve had a lot of moments with each other. Many of my best memories of you are of just spending time with you and enjoying each other’s company.
+</p>
+
+<p>
+   You have shown me so much love and support, been patient and understanding, and have been there for me when I needed you most. I don’t think I could get through any regular day without your help, you always make the little things special, and I really appreciate everything you’re doing for us.
+</p>
+
+<p>
+   We are not perfect (but no body is), and we have gone through so much to get to where we are, but I am thankful that regardless of what comes our way, we have found a way to work through it together. Forever I will be grateful that you choose me every day, and that you want to be with me.
+</p>
+
+<p>
+   On this special occasion of our 2nd anniversary, I am thankful for everything you've done and continue to do for me. More foodtrip, gala, and memories!
+</p>
+
+<p>
+    I love so so much, baby. Thank you for loving me, kasama kang tataba :p
+</p>
+
+<p class="text-right font-romance text-2xl sm:text-3xl text-rose-600 mt-5 sm:mt-6">
+    Yours forever,<br>
+    <span class="text-base sm:text-xl font-sans font-bold text-neutral-800">Mark. </span> 
+</p>
+                            </div>
+                            <!-- Heart Confetti blast target inside -->
+                            <div class="text-center mt-4 sm:mt-6">
+                                <button onclick="blastConfetti(event)" class="bg-rose-500 text-white px-5 py-2 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider hover:bg-rose-600 shadow-md">
+                                    ❤️ Shower with Love
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Envelope Top Flap -->
+                    <div id="envelope-flap" class="absolute inset-x-0 top-0 h-1/2 bg-[#ebd0ca] rounded-t-2xl border-b border-rose-200/40 origin-top transition-all duration-700 z-30" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+
+                    <!-- Envelope Left/Right/Bottom Pockets -->
+                    <div class="absolute inset-0 z-20" style="clip-path: polygon(0 0, 50% 50%, 0 100%); background: #edd5cf; border-top-left-radius: 1rem; border-bottom-left-radius: 1rem;"></div>
+                    <div class="absolute inset-0 z-20" style="clip-path: polygon(100% 0, 50% 50%, 100% 100%); background: #edd5cf; border-top-right-radius: 1rem; border-bottom-right-radius: 1rem;"></div>
+                    <div class="absolute inset-0 z-20" style="clip-path: polygon(0 100%, 50% 50%, 100% 100%); background: #e5cbc5; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; border-top: 1px solid rgba(255,255,255,0.4);"></div>
+
+                    <!-- Wax Seal button -->
+                    <div id="wax-seal" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-rose-700 hover:bg-rose-800 rounded-full shadow-lg border-2 border-amber-400 flex items-center justify-center z-40 transition-all duration-300 hover:scale-110">
+                        <div class="text-amber-300 text-xl sm:text-2xl font-romance select-none">JJ</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p id="envelope-instruction" class="text-xs sm:text-sm text-neutral-400 italic mt-4 sm:mt-6">
+                Click the gold-rimmed wax seal to open my letter.
+            </p>
+        </div>
+
+        <!-- Wave divider at bottom -->
+        <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-none">
+            <svg class="relative block w-full h-[30px] sm:h-[50px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86C265.52,61.09,211.6,44.5,157.34,28.62,103.11,12.74,46.9,4.1,0,0V120H1200V95.8C1126.54,118.4,1055.71,111.31,985.66,92.83Z" fill="#171717"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Sweet Footer -->
+    <footer class="bg-neutral-900 text-neutral-400 py-12 md:py-16 text-center px-4 relative">
+        <div class="max-w-4xl mx-auto space-y-4 md:space-y-6">
+            <div class="font-romance text-3xl sm:text-4xl text-rose-500">I love you, Baby.</div>
+            <p class="text-[10px] sm:text-xs tracking-widest uppercase text-neutral-500">
+                Created with ❤️ for our 2nd Anniversary — July 11, 2026
+            </p>
+            <div class="text-[10px] sm:text-xs text-neutral-600 mt-4 max-w-sm sm:max-w-md mx-auto px-4 leading-relaxed">
+                No matter where life takes us, these moments will always be <code class="text-rose-400 font-mono">special</code> <code class="text-rose-400 font-mono"></code>to me
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Detail Lightbox Modal (Fully Touch Responsive) -->
+    <div id="image-modal" class="fixed inset-0 bg-neutral-950/95 z-50 flex flex-col items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+        <button onclick="closeModal()" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-white text-3xl hover:text-rose-400 p-2 z-50 focus:outline-none" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="max-w-4xl w-full flex flex-col items-center justify-center">
+            <img id="modal-image" class="max-h-[65vh] sm:max-h-[75vh] w-auto max-w-full object-contain rounded-xl shadow-2xl" src="" alt="Zoomed view">
+            <h4 id="modal-title" class="text-white text-xl sm:text-2xl font-header font-bold mt-4 text-center px-4"></h4>
+            <p id="modal-date" class="text-rose-400 text-xs sm:text-sm italic mt-1 text-center"></p>
+        </div>
+    </div>
+
+    <script>
+        // Relationship Start Date: July 11, 2024
+        const relationshipStartDate = new Date('2024-07-11T00:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = now - relationshipStartDate;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((difference / (1000 * 60)) % 60);
+            const seconds = Math.floor((difference / 1000) % 60);
+
+            document.getElementById('counter-days').innerText = String(days).padStart(3, '0');
+            document.getElementById('counter-hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('counter-minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('counter-seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Run countdown initially and set interval
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        const milestones = [
+            {
+                id: "firstpic",
+                filename: "firstpic.jpg",
+                title: "Our First Picture",
+                date: "Early Chapters — July 2024",
+                icon: "fa-camera-retro",
+                color: "from-rose-50 to-pink-100",
+                story: "The absolute moment our stars aligned. Sitting next to you felt like a dream, and having this captured is a forever treasure.",
+                unsplash: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "month1",
+                filename: "month1.jpg",
+                title: "Our First Monthsary",
+                date: "August 11, 2024",
+                icon: "fa-moon",
+                color: "from-rose-50 to-teal-50",
+                story: "Our very first monthsary! One month of sweet smiles, late-night chats, and realizing that you were quickly becoming my entire world.",
+                unsplash: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "month2",
+                filename: "month2.jpg",
+                title: "Our Second Monthsary",
+                date: "September 11, 2024",
+                icon: "fa-star",
+                color: "from-pink-50 to-sky-100",
+                story: "Two months of pure happiness. Every single day spent loving you felt like a beautiful blessing, and my feelings grew deeper with every heartbeat.",
+                unsplash: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "yep2024",
+                filename: "yep2024.jpg",
+                title: "Year End Party 2024",
+                date: "December 2024",
+                icon: "fa-glass-cheers",
+                color: "from-amber-50 to-rose-100",
+                story: "Counting down the final seconds of 2024. I looked at you and knew my 2025 would be safe, warm, and beautiful.",
+                unsplash: "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "fiesta25",
+                filename: "fiesta25.jpg",
+                title: "Fiesta 2025",
+                date: "Early 2025",
+                icon: "fa-masks-theater",
+                color: "from-amber-50 to-orange-100",
+                story: "The beautiful chaos of Fiesta—lively streets, delicious food, local colors, but my favorite view remained you by my side.",
+                unsplash: "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "siete25",
+                filename: "siete25.jpg",
+                title: "Siete Palabras 2025",
+                date: "April 2025",
+                icon: "fa-church",
+                color: "from-violet-50 to-rose-100",
+                story: "Reflective and solemn times spent holding your hand, feeling your quiet grace, and growing closer together spiritually.",
+                unsplash: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "vday25",
+                filename: "vday25.jpg",
+                title: "Our First Valentine's",
+                date: "February 14, 2025",
+                icon: "fa-heart",
+                color: "from-rose-50 to-rose-200",
+                story: "A day filled with your precious smile. Loving you is easy, but making you happy is my life's sweetest work.",
+                unsplash: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "beach",
+                filename: "beach.jpg",
+                title: "First Dagat Together",
+                date: "Mid 2025",
+                icon: "fa-umbrella-beach",
+                color: "from-cyan-50 to-rose-100",
+                story: "Salty breezes, warm sand, and looking at the vastness of the ocean. It reminded me how deep and endless my love is for you.",
+                unsplash: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "18th",
+                filename: "18th.jpg",
+                title: "Her 18th Birthday Debut",
+                date: "May 09, 2025",
+                icon: "fa-crown",
+                color: "from-yellow-50 to-pink-100",
+                story: "My princess stepping into her beautiful debut. You outshone every diamond in the room. I was the luckiest guy alive to hold your hand.",
+                unsplash: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "jayday25",
+                filename: "jayday25.jpg",
+                title: "His 19th Birthday",
+                date: "June 08, 2025",
+                icon: "fa-cake-candles",
+                color: "from-indigo-50 to-rose-100",
+                story: "Celebrating my 19th year of life with the greatest gift I could ever ask for. Having you blow out my candles made every wish come true.",
+                unsplash: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "1anniv",
+                filename: "1anniv.jpg",
+                title: "1st Anniversary Milestone",
+                date: "July 11, 2025",
+                icon: "fa-calendar",
+                color: "from-rose-100 to-rose-300",
+                story: "One full year, 365 days of continuous love. We celebrated how far we had come, completely ready for the adventures waiting in our year two.",
+                unsplash: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "vday26",
+                filename: "vday26.jpg",
+                title: "Valentine's Day 2026",
+                date: "February 14, 2026",
+                icon: "fa-wand-magic-sparkles",
+                color: "from-rose-100 to-rose-200",
+                story: "Another year, yet the butterfly feelings never go away. Celebrating our second Valentine's with even more trust, peace, and promises.",
+                unsplash: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "siete26",
+                filename: "siete26.jpg",
+                title: "Siete Palabras 2026",
+                date: "April 2026",
+                icon: "fa-cross",
+                color: "from-stone-50 to-rose-100",
+                story: "Reflecting on our journey, praying for our dreams, and stepping closer in faith as a couple bound with divine love.",
+                unsplash: "https://images.unsplash.com/photo-1438211317305-6a2419029998?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "jerday26",
+                filename: "jerday26.jpg",
+                title: "Her 19th Birthday",
+                date: "May 09, 2026",
+                icon: "fa-gift",
+                color: "from-pink-50 to-rose-200",
+                story: "Watching my girl turn 19. Beautiful, wise, gentle, and strong. I want to celebrate every single birthday of yours forever.",
+                unsplash: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: "jayday26",
+                filename: "jayday26.jpg",
+                title: "His 20th Birthday",
+                date: "June 08, 2026",
+                icon: "fa-cake-candles",
+                color: "from-amber-50 to-pink-200",
+                story: "Stepping into my twenties, knowing that whatever my future brings, I have the absolute love of my life to share it with.",
+                unsplash: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=600&auto=format&fit=crop"
+            }
+        ];
+
+        function renderMilestones() {
+            const container = document.getElementById('milestones-grid');
+            container.innerHTML = '';
+
+            milestones.forEach((milestone, index) => {
+                const cachedImage = localStorage.getItem(`milestone_img_${milestone.id}`);
+                const initialSrc = cachedImage || milestone.filename;
+                const fallbackSrc = milestone.unsplash;
+
+                const cardHTML = `
+                    <div class="bg-gradient-to-br ${milestone.color} rounded-2xl p-4 sm:p-5 border border-rose-100 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] sm:text-xs uppercase tracking-wider text-rose-600 font-bold bg-white/80 px-2.5 py-1 rounded-full shadow-sm">
+                                    ${milestone.date}
+                                </span>
+                                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-rose-500 text-sm">
+                                    <i class="fas ${milestone.icon}"></i>
+                                </div>
+                            </div>
+
+                            <!-- Image Container (With custom Mobile edit button) -->
+                            <div class="relative overflow-hidden rounded-xl h-44 sm:h-52 bg-neutral-100 mb-3 border border-rose-100/60 flex items-center justify-center">
+                                <img id="img-${milestone.id}" 
+                                     class="w-full h-full object-cover transition-transform duration-700 md:group-hover:scale-115 cursor-pointer" 
+                                     src="${initialSrc}" 
+                                     onerror="this.onerror=null; this.src='${fallbackSrc}';" 
+                                     alt="${milestone.title}" 
+                                     onclick="openModal(this.src, '${milestone.title}', '${milestone.date}')">
+                                
+                                <!-- Hover Overlay for Desktop Uploading -->
+                                <div class="absolute inset-0 bg-neutral-950/40 opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hidden md:flex flex-col items-center justify-center gap-2 text-white">
+                                    <button onclick="document.getElementById('input-${milestone.id}').click()" class="bg-white text-neutral-900 text-xs px-3.5 py-1.5 rounded-full font-semibold shadow hover:bg-rose-500 hover:text-white transition-all">
+                                        <i class="fas fa-cloud-upload-alt mr-1"></i> Replace Photo
+                                    </button>
+                                    <p class="text-[9px] text-neutral-200">Local Cache Override</p>
+                                </div>
+
+                                <!-- Always visible mobile upload camera trigger (Top Right) -->
+                                <button onclick="document.getElementById('input-${milestone.id}').click(); event.stopPropagation();" 
+                                        class="absolute top-2 right-2 bg-white/90 active:bg-rose-500 active:text-white text-neutral-800 p-2 rounded-full shadow-md md:hidden flex items-center justify-center focus:outline-none" 
+                                        title="Replace Photo">
+                                    <i class="fas fa-camera text-xs"></i>
+                                </button>
+                            </div>
+
+                            <input type="file" id="input-${milestone.id}" accept="image/*" class="hidden" onchange="uploadPhoto(event, '${milestone.id}')">
+
+                            <h3 class="font-header text-lg sm:text-xl font-extrabold text-neutral-900 md:group-hover:text-rose-600 transition-colors leading-snug">${milestone.title}</h3>
+                            <p class="text-[10px] text-rose-400 font-semibold mt-0.5 italic">${milestone.filename}</p>
+                            <p class="text-xs sm:text-sm text-neutral-600 font-light leading-relaxed mt-2.5">
+                                ${milestone.story}
+                            </p>
+                        </div>
+
+                        <!-- Card footer detailing chapters -->
+                        <div class="mt-4 pt-3 border-t border-rose-100/50 flex items-center justify-between text-neutral-400 text-xs">
+                            <span class="text-[10px] uppercase font-semibold">Chapter #${index + 1}</span>
+                            <button onclick="openModal(document.getElementById('img-${milestone.id}').src, '${milestone.title}', '${milestone.date}')" class="text-rose-500 font-semibold hover:text-rose-700 flex items-center gap-1 text-[11px] py-1">
+                                Fullscreen <i class="fas fa-expand text-[9px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function uploadPhoto(event, milestoneId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64String = e.target.result;
+                try {
+                    localStorage.setItem(`milestone_img_${milestoneId}`, base64String);
+                    renderMilestones();
+                    confetti({
+                        particleCount: 40,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                } catch (error) {
+                    const modal = document.createElement('div');
+                    modal.className = "fixed inset-0 bg-neutral-900/80 z-[100] flex items-center justify-center p-4";
+                    modal.innerHTML = `
+                        <div class="bg-white p-6 rounded-2xl max-w-sm text-center space-y-4">
+                            <h3 class="text-lg font-bold text-red-600">Image is too big!</h3>
+                            <p class="text-sm text-neutral-600">To save custom uploads inside your phone's browser, please select a smaller or compressed image.</p>
+                            <button onclick="this.parentElement.parentElement.remove()" class="bg-rose-500 text-white px-4 py-2 rounded-full text-xs font-semibold">Okay</button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function spawnHeart() {
+            const container = document.getElementById('hearts-container');
+            if (!container) return;
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+
+            const isRose = Math.random() > 0.5;
+            heart.innerHTML = `<i class="fas ${isRose ? 'fa-heart text-rose-300' : 'fa-heart text-rose-200'}"></i>`;
+            
+            const size = Math.random() * 15 + 10; // Slightly smaller on mobile
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 4 + 5}s`;
+            heart.style.opacity = Math.random() * 0.4 + 0.3;
+
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 9000);
+        }
+
+        setInterval(spawnHeart, 1000);
+
+        let synth, melodyLoop;
+        let isPlaying = false;
+
+        function startMelody() {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+            }
+
+            synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'sine' },
+                envelope: {
+                    attack: 0.15,
+                    decay: 0.3,
+                    sustain: 0.6,
+                    release: 1.0
+                }
+            }).toDestination();
+            synth.volume.value = -14;
+
+            const chords = [
+                ['C4', 'E4', 'G4', 'B4'],
+                ['F4', 'A4', 'C5', 'E5'],
+                ['A4', 'C5', 'E5', 'G5'],
+                ['G4', 'B4', 'D5', 'F5']
+            ];
+
+            let chordIndex = 0;
+            melodyLoop = new Tone.Loop((time) => {
+                synth.triggerAttackRelease(chords[chordIndex], '2n', time);
+                chordIndex = (chordIndex + 1) % chords.length;
+            }, '1n');
+
+            melodyLoop.start(0);
+            Tone.Transport.start();
+        }
+
+        function stopMelody() {
+            if (melodyLoop) {
+                melodyLoop.stop();
+                Tone.Transport.stop();
+            }
+        }
+
+        const musicBtn = document.getElementById('music-toggle');
+        const musicIcon = document.getElementById('music-icon');
+
+        musicBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                startMelody();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+                musicBtn.querySelector('span').innerText = "Pause Music";
+                isPlaying = true;
+            } else {
+                stopMelody();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-music');
+                musicBtn.querySelector('span').innerText = "Play Sweet Harmony";
+                isPlaying = false;
+            }
+        });
+
+        function openModal(imgSrc, title, date) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDate = document.getElementById('modal-date');
+
+            modalImg.src = imgSrc;
+            modalTitle.innerText = title;
+            modalDate.innerText = date;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100');
+        }
+
+        let envelopeOpen = false;
+
+        function openLetter() {
+            if (envelopeOpen) return;
+
+            const flap = document.getElementById('envelope-flap');
+            const seal = document.getElementById('wax-seal');
+            const sheet = document.getElementById('letter-sheet');
+            const instruction = document.getElementById('envelope-instruction');
+
+            // Visual separation of wax seal
+            seal.style.transform = 'translate(-50%, 100%) scale(0)';
+            seal.style.opacity = '0';
+
+            setTimeout(() => {
+                flap.classList.add('rotate-x-180');
+                flap.style.zIndex = '5';
+            }, 300);
+
+            setTimeout(() => {
+                sheet.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                sheet.classList.add('opacity-100', 'scale-100', 'pointer-events-all', 'z-40');
+                
+                // Optimized height sliding offset depending on viewport width
+                const slideUpAmount = window.innerWidth < 640 ? '-190px' : '-240px';
+                sheet.style.transform = `translateY(${slideUpAmount})`;
+                
+                instruction.innerText = "The wax seal is broken. Read your love letter below!";
+                blastConfettiGlobal();
+            }, 700);
+
+            envelopeOpen = true;
+        }
+
+        function blastConfetti(event) {
+            event.stopPropagation();
+            blastConfettiGlobal();
+        }
+
+        function blastConfettiGlobal() {
+            confetti({
+                particleCount: 40,
+                spread: 60,
+                origin: { x: 0.1, y: 0.8 }
+            });
+            confetti({
+                particleCount: 40,
+                spread: 60,
+                origin: { x: 0.9, y: 0.8 }
+            });
+        }
+
+        // Initialize milestones on document load
+        window.onload = function() {
+            renderMilestones();
+        }
+    </script>
+</body>
+</html>
